@@ -1,0 +1,121 @@
+import uuid
+
+playlists = [
+    {
+        "id": uuid.uuid4(),
+        "name": "House",
+        "songs": [
+            {"title": "Little Things", "artist": "Jorja Smith", "duration": "3:24"},
+            {"title": "Massive", "artist": "Drake", "duration": "5:37"},
+            {"title": "Light It Up", "artist": "Major Lazor", "duration": "2:45"},
+            {"title": "Relax My Eyes", "artist": "ANOTR", "duration": "3:12"},
+            {"title": "Gray Area", "artist": "Kaytranada", "duration": "2:18"}
+        ]
+    },
+    {
+        "id": uuid.uuid4(),
+        "name": "Study",
+        "songs": [
+            {"title": "On Form", "artist": "Burna Boy", "duration": "3:43"},
+            {"title": "Sunday Morning", "artist": "Maroon 5", "duration": "4:01"},
+            {"title": "How Did We Know?", "artist": "Baby Smoove", "duration": "2:29"},
+            {"title": "Snooze", "artist": "SZA", "duration": "3:22"},
+            {"title": "Dumnebi", "artist": "Rema", "duration": "3:00"}
+        ]
+    },
+    {
+        "id": uuid.uuid4(),
+        "name": "Chill",
+        "songs": [
+            {"title": "Strawberry Letters 23", "artist": "The Brothers Johnson", "duration": "4:59"},
+            {"title": "When It Falls", "artist": "Zero 7", "duration": "5:31"},
+            {"title": "Horizon", "artist": "Nujabes", "duration": "7:20"},
+            {"title": "After Hours", "artist": "The Weekend", "duration": "6:01"},
+            {"title": "Three Little Birds", "artist": "Bob Marley", "duration": "3:01"}
+
+        ]
+    }
+]
+
+def view_all_playlists():
+    if playlists:
+        print("All Playlists:")
+        for playlist in playlists:
+            print(f"{playlist['name']} - ID: {playlist['id']}")
+    else:
+        print("No playlists found.")
+
+def search_playlist(playlist_id):
+    for playlist in playlists:
+        if playlist['id'] == playlist_id:
+            display_playlist(playlist)
+            return
+    print(f"Playlist with ID: {playlist_id} not found.")
+
+def display_playlist(playlist):
+    if playlist['songs']:
+        print(f"Playlist '{playlist['name']}' (ID: {playlist['id']}):")
+        for song in playlist['songs']:
+            print(f"{song['title']} by {song['artist']} - {song['duration']}")
+    else:
+        print(f"Playlist '{playlist['name']}' (ID: {playlist['id']}) is empty.")
+
+def add_song_to_playlist(playlist_id, song_title, artist, duration):
+    for playlist in playlists:
+        if playlist['id'] == playlist_id:
+            song = {"title": song_title, "artist": artist, "duration": duration}
+            playlist['songs'].append(song)
+            print(f"Song '{song_title}' added to the playlist '{playlist['name']}'")
+            return
+    print(f"Playlist with ID: {playlist_id} not found.")
+
+def delete_song_from_playlist(playlist_id, song_title):
+    for playlist in playlists:
+        if playlist['id'] == playlist_id:
+            for song in playlist['songs']:
+                if song['title'] == song_title:
+                    playlist['songs'].remove(song)
+                    print(f"Song '{song_title}' removed from the playlist '{playlist['name']}'")
+                    return
+            print(f"Song '{song_title}' not found in the playlist '{playlist['name']}'")
+            return
+    print(f"Playlist with ID: {playlist_id} not found.")
+
+def main():
+    while True:
+        print("\nOptions:")
+        print("1. View all playlists")
+        print("2. Search playlist")
+        print("3. Add a song to playlist")
+        print("4. Delete a song from playlist")
+        print("5. Exit")
+        choice = input("Enter your choice: ")
+
+        if choice == "1":
+            view_all_playlists()
+
+        elif choice == "2":
+            playlist_id = input("Enter playlist ID to search: ")
+            search_playlist(uuid.UUID(playlist_id))
+
+        elif choice == "3":
+            playlist_id = input("Enter playlist ID to add song: ")
+            song_title = input("Enter song title: ")
+            artist = input("Enter artist name: ")
+            duration = input("Enter song duration: ")
+            add_song_to_playlist(uuid.UUID(playlist_id), song_title, artist, duration)
+
+        elif choice == "4":
+            playlist_id = input("Enter playlist ID to delete song from: ")
+            song_title = input("Enter song title to delete: ")
+            delete_song_from_playlist(uuid.UUID(playlist_id), song_title)
+
+        elif choice == "5":
+            print("Exiting...")
+            break
+
+        else:
+            print("Invalid choice. Please enter a number between 1 and 5.")
+
+if __name__ == "__main__":
+    main()
